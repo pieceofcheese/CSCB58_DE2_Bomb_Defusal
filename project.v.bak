@@ -1,0 +1,239 @@
+module project(CLOCK_50, GPIO, LEDR, SW);
+
+	input [17:0] SW;
+	input CLOCK_50;
+	output [9:0] LEDR;
+	inout [35:0] GPIO;
+	
+	wire [3:0] mtr0;
+	wire [4:0] mtr1;
+	wire [4:0] mtr2;
+	wire [2:0] sns;
+	
+	assign GPIO[3:0] = SW[3:0];
+	
+	/*assign mtr0[0] = GPIO[3:0];
+	
+	assign mtr1[0] = GPIO[1];
+	assign mtr1[1] = GPIO[3];
+	assign mtr1[2] = GPIO[5];
+	assign mtr1[3] = GPIO[7];
+	assign mtr1[4] = GPIO[9];
+	
+	assign mtr2[0] = GPIO[13];
+	assign mtr2[1] = GPIO[15];
+	assign mtr2[2] = GPIO[17];
+	assign mtr2[3] = GPIO[19];
+	assign mtr2[4] = GPIO[21];
+	
+	assign sns = GPIO[2:0];
+	assign LEDR[2:0] = sns;
+	
+	motor motor1(
+		.in(SW[4:0]),
+		.out(mtr0));
+*/
+	/*datapath d0 (
+
+		);
+*/
+
+/*
+	control c0 (
+		.clk(CLOCK_50),
+		.resetn(SW[9]),
+		.go(SW[0]),
+		.ld_x(),
+		.ld_y(),
+		.ld_z(),
+		.calculate(),
+		.run_motor()
+		);
+*/
+endmodule
+
+module motor(in, out);
+	input [4:0] in;
+	output reg [4:0] out;
+	
+	always @(*)
+	begin
+		out = in;
+	end
+	
+endmodule
+/*
+// build the ALU
+module alu(
+	in1,
+	in2,
+	extra,
+	control,
+	out,
+	overflow);
+
+	input [7:0] in1, in2, extra;
+	input control;
+
+	output reg [7:0] out, overflow;
+
+	reg [15:0] outover;
+
+	always @(*)
+	begin
+		if (control == 1'b0)
+		begin
+			outover = in1 + in2 + extra;
+		end
+		if (control == 1'b1)
+		begin
+			outover = (in1 * in2) + extra;
+		end
+		overflow <= outover[15:8];
+		out <= outover[7:0];
+	end
+
+endmodule
+
+module 		overflow <= outover[15:8];datapath(
+	clk,
+	resetn,
+	sns_x,
+	sns_y,
+	sns_z,
+	ld_x,
+	ld_y,
+	ld_z,
+	calculate,
+	run_motor,
+	mtr_x,
+	mtr_y,
+	mtr_z);
+
+	input clk, resetn, ld_x, ld_y, ld_z, calculate, run_motor;
+	input [2:0] sns_x, sns_y, sns_z;
+
+	output reg mtr_x, mtr_y, mtr_z;
+
+	// set up the ALU
+	wire overfl0 [7:0];
+	wire out_x[7:0];
+	alu alu0(MASS, x, 8'b00000000, 1'b1, out_x, overfl0);
+	wire overfl1 [7:0];
+	wire out_y[7:0];
+	alu alu1(MASS, y, 8'b00000000, 1'b1, out_y, overfl1);
+	wire overfl2 [7:0];
+	wire out_z[7:0];
+	alu alu2(MASS, z, 8'b00000000, 1'b1, out_z, overfl2);
+
+	always @(posedge clk)
+	begin
+		if(!resetn) begin
+			mtr_x <= 10'd0;
+			mtr_y <= 10'd0;
+			mtr_z <= 10'd0;
+
+		end
+		else begin
+			// where the data path does stuff
+			if(ld_x)
+				x <= sns_x;
+			if(ld_y)
+				y <= sns_y;
+			if(ld_z)
+				z <= sns_z;
+			
+		end
+	end
+
+	always @(posedge clk)
+	begin
+		if(!resetn) begin
+			mtr_x <= 10'd0;
+			mtr_y <= 10'd0;
+			mtr_z <= 10'd0;
+		end
+		else begin
+
+			// put the output from alus
+			mtr_x <= out_x;
+			mtr_y <= out_y;
+			mtr_z <= out_z;
+		end
+	end
+
+endmodule
+
+module control (
+	clk,
+	resetn,
+	go,
+	ld_x,
+	ld_y,
+	ld_z,
+	calculate,
+	run_motor);
+
+	input clk, resetn, go;
+	output ld_x, ld_y, ld_z, calculate_x, calculate_y, run_motor;
+
+
+
+	reg [5:0] current_state, next_state, F_x[7:0],	F_y[7:0], F_z[7:0];
+
+	localparam	
+		S_RUN_MOTOR		= 6'd0,
+		S_GET_SENSOR	= 6'd1,
+		S_DET_FORCE		= 6'd2,
+		S_SLT_FORCE 	= 6'd3;
+
+	always @(*)
+	begin: state_table
+		case(current_state)
+			S_RUN_MOTOR: next_state = S_GET_SENSOR;
+			S_GET_SENSOR: next_state = S_DET_FORCE;
+			S_DET_FORCE: next_state = S_SLT_FORCE;
+			S_SLT_FORCE: next_state = S_RUN_MOTORS;
+			// end
+			default: next_state = S_RUN_MOTOR;
+		endcase
+	end
+
+	always @(*)
+	begin: enable_signals
+		ld_x = 1'd0;
+		ld_y = 1'd0;
+		ld_z = 1'd0;
+		calculate = 1'd0;
+		run_motor = 1'd0;
+		
+		case(current_state)
+			S_RUN_MOTORS: begin
+				run_motor = 1'd1;
+				end
+			S_GET_SENSOR: begin
+				ld_x = 1'd1;
+				ld_y = 1'd1;
+				ld_z = 1'd1;
+				end
+			// add math toggles here
+			S_DET_FORCE: begin
+				datapath(CLOCK_50, resetn, sns_x, sns_y, sns_z,	ld_x, ld_y,	ld_z, calculate, run_motor,	F_x, F_y, F_z,);				
+				end
+			S_SLT_FORCE: begin
+				// if tilt starts getting to big
+				// put forces in highest tilt from sensor to itself + 100
+			end
+		endcase
+	end
+
+	always @(posedge clk)
+	begin: state_FFs
+		if(!resetn)
+			current_state <= S_RUN_MOTOR;
+		else
+			current_state <= next_state;
+	end
+endmodule
+*/
+		

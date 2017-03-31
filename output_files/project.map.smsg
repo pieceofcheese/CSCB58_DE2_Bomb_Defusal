@@ -1,0 +1,2 @@
+Warning (10268): Verilog HDL information at project.v(310): always construct contains both blocking and non-blocking assignments File: /cmshome/yinlinha/Documents/CSCB58/project2/project.v Line: 310
+Warning (10268): Verilog HDL information at project.v(888): always construct contains both blocking and non-blocking assignments File: /cmshome/yinlinha/Documents/CSCB58/project2/project.v Line: 888

@@ -1,0 +1,19 @@
+
+State Machine - |project|control:c0|current_state
+Name current_state.S_NEXT_INSTR current_state.S_WIN current_state.S_CHECK_WIN current_state.S_FAIL current_state.S_CHECK_FAIL current_state.S_CHECK_WAIT current_state.S_CHECK current_state.S_LOAD_CODE current_state.S_GEN_CODE current_state.S_PREP_GAME current_state.S_CHECK_INSTRUCT_DONE current_state.S_LOAD_INSTRUCT current_state.S_CHECK_RAND current_state.S_GEN_INSTRUCT current_state.S_BLANK_SCREEN current_state.S_RESET_VALS 
+current_state.S_RESET_VALS 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+current_state.S_BLANK_SCREEN 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 
+current_state.S_GEN_INSTRUCT 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 
+current_state.S_CHECK_RAND 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 
+current_state.S_LOAD_INSTRUCT 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 
+current_state.S_CHECK_INSTRUCT_DONE 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 
+current_state.S_PREP_GAME 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 
+current_state.S_GEN_CODE 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 
+current_state.S_LOAD_CODE 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 
+current_state.S_CHECK 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 
+current_state.S_CHECK_WAIT 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 
+current_state.S_CHECK_FAIL 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 
+current_state.S_FAIL 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 
+current_state.S_CHECK_WIN 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 
+current_state.S_WIN 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+current_state.S_NEXT_INSTR 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
